@@ -20,3 +20,6 @@ void saveGame();
 int loadMap();
 
 int loadMics();
+
+bool optionAscendingTime(Save& a, Save& b);
+bool optionAscendingScore(Save& a, Save& b);

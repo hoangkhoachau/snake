@@ -19,7 +19,7 @@ enum snakeState
 //Rắn
 struct snake
 {
-    int score;
+    int score, totalScore;
     unsigned long long deadTime;
     char direction;
     bool dead, levelFinished;
@@ -29,7 +29,7 @@ struct snake
 };
 
 //Trạng thái game
-enum gameState { inMenu, inGame, inLoad, inPaused ,gameOver};
+enum gameState { inMenu, inGame, inLoad, inPaused ,gameOver,inSetting,inHighscore};
 
 //thông tin ma trận màn hình
 struct screen {
@@ -131,10 +131,10 @@ void drawPortal();
 void clear(screen& s);
 
 //Vẽ thức ăn
-void drawFood(std::unordered_set<int> food);
+void drawFood(int food);
 
 //Vẽ cài đặt
-void drawSettings();
+void drawSetting();
 
 //Lưu game
 void saveGame();
@@ -170,3 +170,7 @@ void nextLevel();
 
 //Xử lí logic
 void update();
+//Vẽ hộp trống
+void drawBox(screen& s, int sizeX, int sizeY, coordinate W, int color, bool selected);
+//Vẽ màn hình highscore
+void drawHighScore();

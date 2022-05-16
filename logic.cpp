@@ -8,7 +8,7 @@ using namespace std;
 extern snake snake1;
 extern bool paused, start;
 extern screen screen1, screen2;
-extern int level, levelScore, cursor2, cursor3, startLoadIndex, portalOrientation;
+extern int level, levelScore, cursor2, cursor3,cursor4, startLoadIndex, portalOrientation, speedSetting,maxLength;
 extern unsigned long long frameN, portalSpawnTime, countDownStartTime;
 extern list<button>::iterator cursor;
 extern list<button> buttons;
@@ -17,14 +17,16 @@ extern vector<Save> save;
 extern gameState state;
 extern wstring MSSV;
 extern coordinate portalPos;
-extern unordered_set<int> food;
+extern int food;
 extern unordered_map<char, bool> key;
 extern frame map[10];
+
 
 void init(snake& snake1) {
     snake1.score = 0;
     snake1.levelFinished = false;
     snake1.deadTime = 0;
+    snake1.totalScore=0;
     snake1.state = inside;
     snake1.direction = 'D'; // Ban đầu hướng di chuyển là sang phải
     snake1.speed = 0.9;       // Tốc độ ban đầu của rắn
@@ -48,7 +50,7 @@ void resetGame()
 {
     level = 0;
     resetData(snake1);
-    food.clear();
+    food=-1;
 }
 
 void move(char c, snake& snake1)
@@ -73,12 +75,13 @@ void move(char c, snake& snake1)
     {
         // speed+=0.5;
         snake1.score++;
+        snake1.totalScore++;
         sound.playEat1();
-        food.erase(index(snake1.body.front().X, snake1.body.front().Y, screen1));
+        food=-1;
         if (!snake1.levelFinished)
         {
             coordinate t = findSpace();
-            food.insert(index(t.X, t.Y, screen1));
+            food=index(t.X, t.Y, screen1);
         }
         return;
     }
@@ -92,7 +95,7 @@ void move(char c, snake& snake1)
     {
         snake1.state = outside;
         coordinate t = findSpace();
-        food.insert(index(t.X, t.Y, screen1));
+        food=index(t.X, t.Y, screen1);
         snake1.levelFinished = false;
         portalPos = { -1, -1 };
     }
@@ -113,7 +116,7 @@ void move(char c, snake& snake1)
 
 void input()
 {
-    if ((GetAsyncKeyState('W') & 0x8000) && !key['W'] && (paused || snake1.direction != 'S') && !snake1.dead)
+    if ((GetAsyncKeyState('W') & 0x8000) && !key['W'] && (paused || snake1.direction != 'S'))
     {
         key['W'] = true;
         switch (state) {
@@ -124,6 +127,9 @@ void input()
                 sound.playMenu();
             }
             break;
+        case inSetting:
+            if (speedSetting < 10) speedSetting++;
+            break;
         case inGame:
             if (snake1.direction != 'S')
                 snake1.direction = 'W';
@@ -132,12 +138,6 @@ void input()
             if (cursor != buttons.begin()) {
                 cursor--;
                 sound.playMenu();
-            }
-            if (snake1.dead)
-            {
-                state = inGame;
-                sound.playError();
-                resetGame();
             }
             break;
         case inLoad:
@@ -155,37 +155,35 @@ void input()
     if (GetAsyncKeyState('W') == 0)
         key['W'] = false;
 
-    if ((GetAsyncKeyState('D') & 0x8000) && !key['D'] && (paused || snake1.direction != 'A') && !snake1.dead)
+    if ((GetAsyncKeyState('D') & 0x8000) && !key['D'] && (paused || snake1.direction != 'A'))
     {
         key['D'] = true;
-        if (paused)
-        {
-            if (snake1.dead)
-            {
-                state = inGame;
-                sound.playError();
-                resetGame();
-            }
-        }
-        else
-        {
+        switch (state) {
+        case inSetting:
+            if (cursor4 <4) cursor4++;
+            break;
+        case inGame:
             if (snake1.direction != 'A')
                 snake1.direction = 'D';
+            break;
         }
     }
     if (GetAsyncKeyState('D') == 0)
         key['D'] = false;
 
-    if ((GetAsyncKeyState('S') & 0x8000) && !key['S'] && (paused || snake1.direction != 'W') && !snake1.dead)
+    if ((GetAsyncKeyState('S') & 0x8000) && !key['S'] && (paused || snake1.direction != 'W'))
     {
         key['S'] = true;
         switch (state) {
         case inMenu:
-            if (cursor2 < 4)
+            if (cursor2 < 6)
             {
                 sound.playMenu();
                 cursor2++;
             }
+            break;
+        case inSetting:
+            if (speedSetting > 1) speedSetting--;
             break;
         case inGame:
             if (snake1.direction != 'W')
@@ -195,12 +193,6 @@ void input()
             if (cursor != prev(buttons.end())) {
                 sound.playMenu();
                 cursor++;
-            }
-            if (snake1.dead)
-            {
-                state = inGame;
-                sound.playError();
-                resetGame();
             }
             break;
         case inLoad:
@@ -219,22 +211,17 @@ void input()
     if (GetAsyncKeyState('S') == 0)
         key['S'] = false;
 
-    if ((GetAsyncKeyState('A') & 0x8000) && !key['A'] && (paused || snake1.direction != 'D') && !snake1.dead)
+    if ((GetAsyncKeyState('A') & 0x8000) && !key['A'] && (paused || snake1.direction != 'D'))
     {
         key['A'] = true;
-        if (paused)
-        {
-            if (snake1.dead)
-            {
-                state = inGame;
-                sound.playError();
-                resetGame();
-            }
-        }
-        else
-        {
+        switch (state) {
+        case inSetting:
+            if (cursor4 > 0) cursor4--;
+            break;
+        case inGame:
             if (snake1.direction != 'D')
                 snake1.direction = 'A';
+            break;
         }
     }
     if (GetAsyncKeyState('A') == 0)
@@ -275,6 +262,8 @@ void input()
                 resetGame();
             }
             break;
+        case inHighscore:
+        case inSetting:
         case inLoad:
             sound.playEnter();
             cursor2 = 0;
@@ -302,6 +291,10 @@ void input()
     {
         key[']'] = true;
         switch (state) {
+        case gameOver:
+            state = inPaused;
+            paused = true;
+            break;
         case inMenu:
             sound.playEnter();
             switch (cursor2) {
@@ -319,19 +312,30 @@ void input()
                 if (save.size() > 0) {
                     countDownStartTime = frameN;
                     start = true;
+                    sort(save.begin(), save.end(), optionAscendingTime);
                     loadSave(save.back());
                     sound.playReady();
                 }
                 break;
             case 2:
+                sort(save.begin(), save.end(), optionAscendingTime);
                 sound.playEnter();
                 state = inLoad;
                 break;
             case 3:
+                sort(save.begin(), save.end(), optionAscendingScore);
+                sound.playEnter();
+                state = inHighscore;
+                break;
+            case 4:
+                sound.playEnter();
+                state = inSetting;
+                break;
+            case 5:
                 sound.playEnter();
                 drawIntroduction();
                 break;
-            case 4:
+            case 6:
 
                 system("color D0");
                 ExitGame();
@@ -341,9 +345,11 @@ void input()
             switch (cursor->index)
             {
             case 0:
-                sound.playEnter();
-                state = inGame;
-                paused = !paused;
+                if (!snake1.dead) {
+                    sound.playEnter();
+                    state = inGame;
+                    paused = !paused;
+                }
                 break;
             case 1:
                 sound.playEnter();
@@ -361,12 +367,15 @@ void input()
         case inLoad:
             if (save.size() > 0)
             {
-                clear(screen1);
                 loadSave(save[cursor3]);
                 countDownStartTime = frameN;
                 start = true;
                 sound.playReady();
             }
+            break;
+        case inSetting:
+            sound.playEnter();
+            state = inMenu;
             break;
         }
     }
@@ -441,7 +450,7 @@ void update()
     {
         spawnPortal();
         portalSpawnTime = frameN;
-        food.clear();
+        food=-1;
         snake1.levelFinished = true;
     }
     else if (snake1.state == inside)
@@ -451,6 +460,8 @@ void update()
             snake1.speed += 0.2;
             level = 0;
         }
+        if (snake1.body.size() >= maxLength)
+            snake1.body.resize(5);
         nextLevel();
     }
 
