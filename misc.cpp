@@ -5,7 +5,7 @@ bool optionAscendingTime(Save& a, Save& b) {
     return a.saveTime > b.saveTime;
 }
 bool optionAscendingScore(Save& a, Save& b) {
-    return a.snak.score > b.snak.score;
+    return a.snak.totalScore > b.snak.totalScore;
 
 }
 int index(const int& x, const int& y, screen& s)

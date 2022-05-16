@@ -10,7 +10,7 @@ wifstream fin;
 vector<Save> save;
 extern snake snake1;
 extern int level,cursor3;
-extern unordered_set<int> food;
+extern int food;
 
 void writeSaveFile()
 {
@@ -24,6 +24,7 @@ void writeSaveFile()
         fout << i.level << '\n';
         fout << chrono::system_clock::to_time_t(i.saveTime) << '\n';
         fout << i.snak.score << '\n';
+        fout << i.snak.totalScore;
         fout << i.snak.deadTime << '\n';
         fout << i.snak.levelFinished << '\n';
         fout << i.snak.state << '\n';
@@ -55,6 +56,7 @@ void loadSaveFile()
         fin >> T;
         save[i].saveTime = chrono::system_clock::from_time_t(T);
         fin >> save[i].snak.score;
+        fin >> save[i].snak.totalScore;
         fin >> save[i].snak.deadTime;
         fin >> save[i].snak.levelFinished;
         fin >> t;
@@ -75,11 +77,16 @@ void loadSaveFile()
 
 void loadSave(Save& save)
 {
-    food.clear();
+    if (food > 0) {
+        screen1.characters[food] = L' ';
+        screen1.color[food] = 14 * 16;
+        food=-1;
+    }
     snake1 = snake(save.snak);
     level = save.level;
     coordinate t = findSpace();
-    food.insert(index(t.X, t.Y, screen1));
+    if (snake1.state==goingOut || snake1.state == inside)
+        food=index(t.X, t.Y, screen1);
 }
 
 extern HANDLE buffer, old;

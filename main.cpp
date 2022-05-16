@@ -20,13 +20,14 @@ list<button> buttons{
 list<button>::iterator cursor = buttons.begin();
 int cursor2 = 0;
 int cursor3 = 0;
+int cursor4 = 0;
 unsigned long long frameN = 0;
 int level = 0, levelScore = 5;
 bool paused = true;
 bool start = false;
 unsigned long long countDownStartTime = 0;
 
-
+int color[5] = { 7+16*3 ,7+16*2 ,7+16*1 ,7+16*6 ,7+16*12 };
 screen screen1(width, height), screen2(width * 2, height);
 // Khai bao 2 ma tran
 // Hàm đổi từ mảng 2 chiều sang mảng 1 chiều
@@ -34,14 +35,14 @@ screen screen1(width, height), screen2(width * 2, height);
 
 // Trên bản đồ có đồ ăn ko
 // Tạo đồ ăn
-unordered_set<int> food;
-
-int speedSetting = 0;
+int food=-1;
+wstring animationSnake[8] = { L"snakeMoving1",L"snakeMoving2",L"snakeMoving3" ,L"snakeMoving2", L"snakeMoving1", L"snakeMoving2",L"snakeMoving3",L"snakeMoving4" };
+int speedSetting = 2;
 coordinate portalPos = { -1, -1 };
 int portalOrientation = 0;
 unsigned long long portalSpawnTime = 0;
-wstring MSSV = L"211204322112045021120454211204812112046821120432211204502112045421120481211204682112043221120450211204542112048121120468211204322112045021120454211204812112046821120432211204502112045421120481211204682112043221120450211204542112048121120468";
-
+wstring MSSV = L"2112043221120450211204542112048121120468";
+int maxLength = 40;
 // Lấy các lệnh di chuyển
 unordered_map<char, bool> key = { {'W', false}, {'S', false}, {'A', false}, {'D', false}, {' ', false},{'[', false},{']', false},{'|',false} };
 extern vector<Save> save;
@@ -52,10 +53,11 @@ HANDLE buffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHA
 
 int main()
 {
+    sound.playBackground();
     SetConsoleOutputCP(CP_UTF8);
     ShowConsoleCursor(false);
     FixConsoleWindow();
-    loading();
+    //loading();
 
     //-----------------------------------------------------------------
     // Thiet lap buffer
@@ -89,7 +91,7 @@ int main()
 
     _setmode(_fileno(stdin), _O_U8TEXT);
     //_setmode(_fileno(stdout), _O_U8TEXT);
-    //sound.playBackground();
+    
     
     //-----------------------------------------------------------------
 
@@ -120,8 +122,8 @@ int main()
 
         switch (state) {
         case inMenu:
-            if (accumulator > 120ms * (1.0 / snake1.speed))
-                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / snake1.speed));
+            if (accumulator > 120ms * (1.0 / (snake1.speed + speedSetting / 10)))
+                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / (snake1.speed + speedSetting / 10)));
             SetConsoleActiveScreenBuffer(old);
             if (accumulator1 > timestep)
             {
@@ -140,9 +142,9 @@ int main()
             SetConsoleActiveScreenBuffer(buffer);
 
             // Nếu nếu khoảng thời gian từ mốc thời gian trước đến hiện tại bé hơn một khoảng thời gian thì thực hiện việc di chuyển rắn
-            if (accumulator > 120ms * (1.0 / snake1.speed))
+            if (accumulator > 120ms * (1.0 / (snake1.speed + speedSetting / 10)))
             {
-                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / snake1.speed));
+                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / (snake1.speed + speedSetting / 10)));
                 update();
             }
 
@@ -152,8 +154,7 @@ int main()
                 accumulator1 -= timestep;
                 clear(screen1); // Xoa man hinh
                 draw(screen1, map[level], { 0, 0 }, 0, 1, 1);
-                if (snake1.score == 5)
-                    drawPortal();
+                drawPortal();
                 drawFood(food);
                 draw(snake1); // Vẽ rắn
                 drawSideBar();
@@ -165,8 +166,8 @@ int main()
             }
             break;
         case inLoad:
-            if (accumulator > 120ms * (1.0 / snake1.speed))
-                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / snake1.speed));
+            if (accumulator > 120ms * (1.0 / (snake1.speed + speedSetting / 10)))
+                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / (snake1.speed + speedSetting / 10)));
             SetConsoleActiveScreenBuffer(old);
             if (accumulator1 > timestep)
             {
@@ -179,7 +180,26 @@ int main()
                 WriteConsoleOutputAttribute(old, screen2.color, width * height * 2, { 0, 0 }, &BytesWritten);
             }
             break;
+        case inHighscore:
+        case inSetting:
+            if (accumulator > 120ms * (1.0 / (snake1.speed + speedSetting / 10)))
+                accumulator -= chrono::duration_cast<chrono::nanoseconds>(120ms * (1.0 / (snake1.speed + speedSetting/10)));
+            SetConsoleActiveScreenBuffer(old);
+            if (accumulator1 > timestep)
+            {
+                frameN++;
+                accumulator1 -= timestep;
+                clear(screen2);
+                if (state == inSetting)
+                    drawSetting();
+                else
+                    drawHighScore();
+                WriteConsoleOutputCharacterW(old, screen2.characters, width * height * 2, { 0, 0 }, &BytesWritten);
+                WriteConsoleOutputAttribute(old, screen2.color, width * height * 2, { 0, 0 }, &BytesWritten);
+            }
+            break;
         }
+
         
     }
     
