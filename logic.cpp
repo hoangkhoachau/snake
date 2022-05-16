@@ -38,11 +38,11 @@ void init(snake& snake1) {
         {-50 - 4, -50},
     };
 }
+
 void resetData(snake& snake1)
 {
     init(snake1);
 }
-
 
 void resetGame()
 {
@@ -50,6 +50,7 @@ void resetGame()
     resetData(snake1);
     food.clear();
 }
+
 void move(char c, snake& snake1)
 {
     switch (c)
@@ -305,6 +306,7 @@ void input()
             sound.playEnter();
             switch (cursor2) {
             case 0:
+                clear(screen1);
                 countDownStartTime = frameN;
                 start = true;
                 level = 0;
@@ -359,6 +361,7 @@ void input()
         case inLoad:
             if (save.size() > 0)
             {
+                clear(screen1);
                 loadSave(save[cursor3]);
                 countDownStartTime = frameN;
                 start = true;
@@ -454,6 +457,7 @@ void update()
 
 
 }
+
 coordinate findSpace(int sizeX, int sizeY)
 {
     int x, y;

@@ -1,9 +1,11 @@
-﻿#include "Header.h"
+#include "Header.h"
 #include "sound.h"
 #include "externalGraphics.h"
 #include "game.h"
+
 #pragma warning( push )
 #pragma warning( disable : 4566 )
+
 using namespace std;
 
 void gotoXY(int x, int y)
@@ -12,6 +14,17 @@ void gotoXY(int x, int y)
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void ShowConsoleCursor(bool showFlag)
+{
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO     cursorInfo;
+
+    GetConsoleCursorInfo(out, &cursorInfo);
+    cursorInfo.bVisible = showFlag; // set the cursor visibility
+    SetConsoleCursorInfo(out, &cursorInfo);
 }
 
 // Hàm đổi màu chữ
@@ -294,153 +307,153 @@ void Mes_exit()
 // Hàm intro (fixed)
 void loading()
 {
-    // Đổi nền thành màu trắng
-    system("color f0");
+    //// Đổi nền thành màu trắng
+    //system("color f0");
 
-    // Đổi màu cho các kí tự in ra
-    for (int i = 249; i < 253; i++) {
-        gotoXY(1, 1);
-        FixConsoleColor(i);
-        cout << "▓▓░░░░";
-        gotoXY(1, 2);
-        FixConsoleColor(i);
-        cout << "▒▒████";
-        gotoXY(1, 3);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒████";
-        gotoXY(1, 4);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒░░▒▒▒▒▒▒";
-        gotoXY(1, 5);
-        FixConsoleColor(i);
-        cout << "░░░░▒▒▒▒▒▒▒▒▓▓██";
-        gotoXY(1, 6);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒████                ██████";
-        gotoXY(1, 7);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒██████        ██▒▒▒▒▒▒██████████          ████████";
-        gotoXY(1, 8);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓";
-        gotoXY(1, 9);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████        ██▓▓▒▒▒▒▒▒▓▓██";
-        gotoXY(1, 10);
-        FixConsoleColor(i);
-        cout << "  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    ▒▒▒▒▒▒▒▒  ██▒▒▒▒▒▒██";
-        gotoXY(1, 11);
-        FixConsoleColor(i);
-        cout << "▒▒    ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██  ▒▒▒▒██████▒▒▒▒  ██▒▒██▒▒████";
-        gotoXY(1, 12);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████  ▒▒▒▒██░░░░░░██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
-        gotoXY(1, 13);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░░  ██    ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██████";
-        gotoXY(1, 14);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████░░    ██    ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██████";
-        gotoXY(1, 15);
-        FixConsoleColor(i);
-        cout << "▒▒▒▒▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    ██    ██▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
-        gotoXY(1, 16);
-        FixConsoleColor(i);
-        cout << "▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒      ▒▒▒▒████    ██▒▒▒▒▓▓████▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
-        gotoXY(1, 17);
-        FixConsoleColor(i);
-        cout << "██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒  ▒▒▒▒▒▒████▒▒▒▒▒▒██▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
-        gotoXY(1, 18);
-        FixConsoleColor(i);
-        cout << "  ██████▓▓▒▒▒▒▒▒▒▒▒▒▒▒  ░░████  ▒▒▒▒  ▒▒▒▒▒▒████  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░██  ▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒██";
-        gotoXY(1, 19);
-        FixConsoleColor(i);
-        cout << "        ████▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██    ▒▒▒▒▒▒██▓▓▓▓██  ▒▒▒▒▒▒▒▒▒▒    ░░██░░██  ▒▒▒▒▓▓██▒▒▒▒▒▒██";
-        gotoXY(1, 20);
-        FixConsoleColor(i);
-        cout << "            ██▓▓▒▒▓▓▓▓▒▒▒▒▒▒██▓▓▓▓▒▒▒▒▒▒██▓▓▓▓▒▒▓▓▓▓░░▒▒▒▒░░░░▓▓▓▓▓▓░░▓▓██  ░░  ▒▒▒▒▒▒▒▒▓▓░░";
-        gotoXY(1, 21);
-        FixConsoleColor(i);
-        cout << "              ████▒▒▓▓██▒▒▒▒▒▒▒▒▒▒██████▓▓▓▓▓▓▓▓▒▒████░░░░████▓▓▓▓▓▓██▓▓▓▓██████  ██████";
-        gotoXY(1, 22);
-        FixConsoleColor(i);
-        cout << "                  ██▒▒▒▒██▒▒▒▒▒▒▒▒▓▓▒▒▓▓██▓▓▓▓▒▒██░░░░████▓▓▓▓████▓▓▓▓▓▓██      ██";
-        gotoXY(1, 23);
-        FixConsoleColor(i);
-        cout << "                    ██▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓████▒▒██░░░░░░▒▒████░░░░██████░░    ";
-        gotoXY(1, 24);
-        FixConsoleColor(i);
-        cout << "                          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓██▓▓▓▓░░░░░░░░░░░░░░░░░░░░██▒▒▓▓  ";
-        gotoXY(1, 25);
-        FixConsoleColor(i);
-        cout << "                            ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓████░░░░░░░░░░░░░░░░░░░░░░░░░░▓▓";
-        gotoXY(1, 26);
-        FixConsoleColor(i);
-        cout << "                                ██████▒▒▒▒▒▒▒▒▒▒▒▒▓▓██░░░░░░████████░░░░░░░░░░  ██";
-        gotoXY(1, 27);
-        FixConsoleColor(i);
-        cout << "                                      ████▒▒▒▒▒▒▒▒▒▒▓▓██░░██▓▓▓▓██  ██████░░░░░░  ██";
-        gotoXY(1, 28);
-        FixConsoleColor(i);
-        cout << "                                          ████▒▒▒▒▒▒▒▒▓▓████▒▒▒▒██  ██▓▓▓▓████░░░░  ████    ██";
-        gotoXY(1, 29);
-        FixConsoleColor(i);
-        cout << "                                              ████▒▒▒▒▒▒▒▒▒▒██▒▒██    ████▓▓▓▓██░░░░    ████  ██";
-        gotoXY(1, 30);
-        FixConsoleColor(i);
-        cout << "                                                  ██▒▒▒▒▒▒▒▒▓▓██░░░░████▓▓▒▒██  ▓▓██░░░░░░░░░░██";
-        gotoXY(1, 31);
-        FixConsoleColor(i);
-        cout << "                                                    ████▒▒▒▒▒▒▓▓████▓▓▓▓▒▒██        ████░░░░██";
-        gotoXY(1, 32);
-        FixConsoleColor(i);
-        cout << "                                                    ░░░░▓▓▒▒▒▒▒▒▓▓▓▓▒▒████░░          ░░██▓▓░░";
-        gotoXY(1, 33);
-        FixConsoleColor(i);
-        cout << "                                                          ████▒▒▒▒████";
-        gotoXY(1, 34);
-        FixConsoleColor(i);
-        cout << "                                                              ████";
+    //// Đổi màu cho các kí tự in ra
+    //for (int i = 249; i < 253; i++) {
+    //    gotoXY(1, 1);
+    //    FixConsoleColor(i);
+    //    cout << "▓▓░░░░";
+    //    gotoXY(1, 2);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒████";
+    //    gotoXY(1, 3);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒████";
+    //    gotoXY(1, 4);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒░░▒▒▒▒▒▒";
+    //    gotoXY(1, 5);
+    //    FixConsoleColor(i);
+    //    cout << "░░░░▒▒▒▒▒▒▒▒▓▓██";
+    //    gotoXY(1, 6);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒████                ██████";
+    //    gotoXY(1, 7);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒██████        ██▒▒▒▒▒▒██████████          ████████";
+    //    gotoXY(1, 8);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓";
+    //    gotoXY(1, 9);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████        ██▓▓▒▒▒▒▒▒▓▓██";
+    //    gotoXY(1, 10);
+    //    FixConsoleColor(i);
+    //    cout << "  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    ▒▒▒▒▒▒▒▒  ██▒▒▒▒▒▒██";
+    //    gotoXY(1, 11);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒    ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██  ▒▒▒▒██████▒▒▒▒  ██▒▒██▒▒████";
+    //    gotoXY(1, 12);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████  ▒▒▒▒██░░░░░░██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
+    //    gotoXY(1, 13);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░░  ██    ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██████";
+    //    gotoXY(1, 14);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████░░    ██    ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██████";
+    //    gotoXY(1, 15);
+    //    FixConsoleColor(i);
+    //    cout << "▒▒▒▒▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    ██    ██▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
+    //    gotoXY(1, 16);
+    //    FixConsoleColor(i);
+    //    cout << "▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒      ▒▒▒▒████    ██▒▒▒▒▓▓████▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
+    //    gotoXY(1, 17);
+    //    FixConsoleColor(i);
+    //    cout << "██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒  ▒▒▒▒▒▒████▒▒▒▒▒▒██▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██";
+    //    gotoXY(1, 18);
+    //    FixConsoleColor(i);
+    //    cout << "  ██████▓▓▒▒▒▒▒▒▒▒▒▒▒▒  ░░████  ▒▒▒▒  ▒▒▒▒▒▒████  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░██  ▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒██";
+    //    gotoXY(1, 19);
+    //    FixConsoleColor(i);
+    //    cout << "        ████▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██    ▒▒▒▒▒▒██▓▓▓▓██  ▒▒▒▒▒▒▒▒▒▒    ░░██░░██  ▒▒▒▒▓▓██▒▒▒▒▒▒██";
+    //    gotoXY(1, 20);
+    //    FixConsoleColor(i);
+    //    cout << "            ██▓▓▒▒▓▓▓▓▒▒▒▒▒▒██▓▓▓▓▒▒▒▒▒▒██▓▓▓▓▒▒▓▓▓▓░░▒▒▒▒░░░░▓▓▓▓▓▓░░▓▓██  ░░  ▒▒▒▒▒▒▒▒▓▓░░";
+    //    gotoXY(1, 21);
+    //    FixConsoleColor(i);
+    //    cout << "              ████▒▒▓▓██▒▒▒▒▒▒▒▒▒▒██████▓▓▓▓▓▓▓▓▒▒████░░░░████▓▓▓▓▓▓██▓▓▓▓██████  ██████";
+    //    gotoXY(1, 22);
+    //    FixConsoleColor(i);
+    //    cout << "                  ██▒▒▒▒██▒▒▒▒▒▒▒▒▓▓▒▒▓▓██▓▓▓▓▒▒██░░░░████▓▓▓▓████▓▓▓▓▓▓██      ██";
+    //    gotoXY(1, 23);
+    //    FixConsoleColor(i);
+    //    cout << "                    ██▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓████▒▒██░░░░░░▒▒████░░░░██████░░    ";
+    //    gotoXY(1, 24);
+    //    FixConsoleColor(i);
+    //    cout << "                          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓██▓▓▓▓░░░░░░░░░░░░░░░░░░░░██▒▒▓▓  ";
+    //    gotoXY(1, 25);
+    //    FixConsoleColor(i);
+    //    cout << "                            ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓████░░░░░░░░░░░░░░░░░░░░░░░░░░▓▓";
+    //    gotoXY(1, 26);
+    //    FixConsoleColor(i);
+    //    cout << "                                ██████▒▒▒▒▒▒▒▒▒▒▒▒▓▓██░░░░░░████████░░░░░░░░░░  ██";
+    //    gotoXY(1, 27);
+    //    FixConsoleColor(i);
+    //    cout << "                                      ████▒▒▒▒▒▒▒▒▒▒▓▓██░░██▓▓▓▓██  ██████░░░░░░  ██";
+    //    gotoXY(1, 28);
+    //    FixConsoleColor(i);
+    //    cout << "                                          ████▒▒▒▒▒▒▒▒▓▓████▒▒▒▒██  ██▓▓▓▓████░░░░  ████    ██";
+    //    gotoXY(1, 29);
+    //    FixConsoleColor(i);
+    //    cout << "                                              ████▒▒▒▒▒▒▒▒▒▒██▒▒██    ████▓▓▓▓██░░░░    ████  ██";
+    //    gotoXY(1, 30);
+    //    FixConsoleColor(i);
+    //    cout << "                                                  ██▒▒▒▒▒▒▒▒▓▓██░░░░████▓▓▒▒██  ▓▓██░░░░░░░░░░██";
+    //    gotoXY(1, 31);
+    //    FixConsoleColor(i);
+    //    cout << "                                                    ████▒▒▒▒▒▒▓▓████▓▓▓▓▒▒██        ████░░░░██";
+    //    gotoXY(1, 32);
+    //    FixConsoleColor(i);
+    //    cout << "                                                    ░░░░▓▓▒▒▒▒▒▒▓▓▓▓▒▒████░░          ░░██▓▓░░";
+    //    gotoXY(1, 33);
+    //    FixConsoleColor(i);
+    //    cout << "                                                          ████▒▒▒▒████";
+    //    gotoXY(1, 34);
+    //    FixConsoleColor(i);
+    //    cout << "                                                              ████";
 
-        Sleep(1000);
-    }
+    //    Sleep(1000);
+    //}
     system("cls");
     system("color f0");
-    gotoXY(20, 1);
+    gotoXY(12, 1);
     FixConsoleColor(244);
-    cout << "░██████╗███╗░░██╗░█████╗░██╗░░██╗███████╗  ░██████╗░░█████╗░███╗░░░███╗███████╗";
-    gotoXY(20, 2);
+    cout << "░██████╗███╗░░██╗░█████╗░██╗░░██╗███████╗  ░██████╗░░█████╗░███╗░░░███╗███████╗";
+    gotoXY(12, 2);
     FixConsoleColor(244);
-    cout << "██╔════╝████╗░██║██╔══██╗██║░██╔╝██╔════╝  ██╔════╝░██╔══██╗████╗░████║██╔════╝";
-    gotoXY(20, 3);
+    cout << "██╔════╝████╗░██║██╔══██╗██║░██╔╝██╔════╝  ██╔════╝░██╔══██╗████╗░████║██╔════╝";
+    gotoXY(12, 3);
     FixConsoleColor(244);
-    cout << "╚█████╗░██╔██╗██║███████║█████═╝░█████╗░░  ██║░░██╗░███████║██╔████╔██║█████╗░░";
-    gotoXY(20, 4);
+    cout << "╚█████╗░██╔██╗██║███████║█████═╝░█████╗░░  ██║░░██╗░███████║██╔████╔██║█████╗░░";
+    gotoXY(12, 4);
     FixConsoleColor(244);
-    cout << "░╚═══██╗██║╚████║██╔══██║██╔═██╗░██╔══╝░░  ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░";
-    gotoXY(20, 5);
+    cout << "░╚═══██╗██║╚████║██╔══██║██╔═██╗░██╔══╝░░  ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░";
+    gotoXY(12, 5);
     FixConsoleColor(244);
-    cout << "██████╔╝██║░╚███║██║░░██║██║░╚██╗███████╗  ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗";
-    gotoXY(20, 6);
+    cout << "██████╔╝██║░╚███║██║░░██║██║░╚██╗███████╗  ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗";
+    gotoXY(12, 6);
     FixConsoleColor(244);
-    cout << "╚═════╝░╚═╝░░╚══╝╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝  ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝";
+    cout << "╚═════╝░╚═╝░░╚══╝╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝  ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝";
 
 
-    gotoXY(20, 9);
+    gotoXY(12, 9);
     FixConsoleColor(244);
     cout << " █▄░▒█ ▒█░▒█ ▒█▀▀▀█ ▒█▀▄▀█   █▀▀";
-    gotoXY(20, 10);
+    gotoXY(12, 10);
     FixConsoleColor(244);
     cout << "▒█▒█▒█ ▒█▀▀█ ▒█░░▒█ ▒█▒█▒█   ▀▀▄";
-    gotoXY(20, 11);
+    gotoXY(12, 11);
     FixConsoleColor(244);
     cout << "▒█░░▀█ ▒█░▒█ ▒█▄▄▄█ ▒█░░▒█   ▄▄▀";
 
 
 
-    gotoXY(36, 20);
+    gotoXY(30, 18);
     cout << " Loading...\n";
-    gotoXY(36, 22);
+    gotoXY(30, 20);
     for (int i = 1; i <= 50; i++)
     {
         for (int t = 0; t <= 88888888; t++);
@@ -448,16 +461,16 @@ void loading()
         cout << "█";
     }
     Sleep(500);
-    gotoXY(48, 24);
-    cout << "⃝ PRESS B TO BEGIN ⃝" << endl;
+    gotoXY(45, 22);
+    cout << "PRESS ENTER TO BEGIN" << endl;
     for (int i = 1; i <= 2; ++i)
     {
         Sleep(250);
-        gotoXY(48, 24);
+        gotoXY(45, 22);
         cout << "                          ";
         Sleep(250);
-        gotoXY(48, 24);
-        cout << "⃝ PRESS B TO BEGIN ⃝" << endl;
+        gotoXY(45, 22);
+        cout << "PRESS ENTER TO BEGIN" << endl;
     }
     while (true)
     {
@@ -511,6 +524,7 @@ void ExitGame()
     SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
     exit(0);
 }
+
 void setTextColor(int color)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
@@ -531,7 +545,6 @@ void drawBoard(int height, int width, int posX, int posY)
     }
     gotoXY(posX + width, posY + height); cout << "╝";
 }
-
 
 // fixed.
 void drawIntroduction()
@@ -608,9 +621,10 @@ void drawIntroduction()
         gotoXY(MemX, FifthMemy); cout << "Châu Hoàng Khoa         21120481";
         setTextColor(208);
         gotoXY(BoardRightX + 10, BoardRightY + 23);
-        cout << "⃝ PRESS ENTER TO RETURN MENU ⃝" << endl;
+        cout << "PRESS ENTER TO RETURN MENU" << endl;
         if (GetAsyncKeyState(VK_RETURN))
             return;
     }
 }
+
 #pragma warning( pop )

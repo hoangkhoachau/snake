@@ -2,6 +2,7 @@
 #include "fileProcessing.h"
 #include "game.h"
 #include "sound.h"
+
 using namespace std;
  
 extern screen screen1;
@@ -10,6 +11,7 @@ vector<Save> save;
 extern snake snake1;
 extern int level,cursor3;
 extern unordered_set<int> food;
+
 void writeSaveFile()
 {
     fin.close();
@@ -73,13 +75,15 @@ void loadSaveFile()
 
 void loadSave(Save& save)
 {
+    food.clear();
     snake1 = snake(save.snak);
     level = save.level;
-    food.clear();
     coordinate t = findSpace();
     food.insert(index(t.X, t.Y, screen1));
 }
-extern HANDLE buffer,old;
+
+extern HANDLE buffer, old;
+
 void saveGame()
 {
     coordinate coordi = { 5, height / 2 }; // fixed
@@ -109,6 +113,7 @@ void saveGame()
     WriteConsoleOutputAttribute(buffer, screen1.color, width * height, { 0, 0 }, &BytesWritten);
     Sleep(1000);
 }
+
 extern unordered_map<wstring, frame> object;
 extern frame map[10];
 
