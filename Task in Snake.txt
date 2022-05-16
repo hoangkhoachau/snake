@@ -1,0 +1,10 @@
+- xử lí sound: 
+	+ ăn mồi.
+	+ đụng cổng, đụng tường, đâm người. (game over)
+	+ qua màn.
+	+ âm thanh di chuyển chọn mục.
+	+ sound khi exit phần game. (ngoài main menu)
+- xử lí map 
+(BoardWidth 100 - BoardHeight 30)
+(MenuWidth 15   - MenuHeight 22)
+(GameWidth 70	- GameHeight 20)
