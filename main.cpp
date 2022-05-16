@@ -6,8 +6,6 @@
 
 using namespace std;
 
-
-
 extern wifstream fin;
 snake snake1;
 gameState state = inMenu;
@@ -38,6 +36,7 @@ screen screen1(width, height), screen2(width * 2, height);
 // Tạo đồ ăn
 unordered_set<int> food;
 
+int speedSetting = 0;
 coordinate portalPos = { -1, -1 };
 int portalOrientation = 0;
 unsigned long long portalSpawnTime = 0;
@@ -49,18 +48,20 @@ extern vector<Save> save;
 int startLoadIndex = 0;
 HANDLE old = GetStdHandle(STD_OUTPUT_HANDLE);
 HANDLE buffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+
+
 int main()
 {
-    //loading();
+    SetConsoleOutputCP(CP_UTF8);
+    ShowConsoleCursor(false);
+    FixConsoleWindow();
+    loading();
+
     //-----------------------------------------------------------------
     // Thiet lap buffer
     LPCWSTR title = L"SNAKE - GROUP 5 - 21CTT4 - HCMUS";
     SetConsoleTitleW(title);
     
-    /*
-    FixConsoleWindow();
-    
-    */
     HWND consoleWindow = GetConsoleWindow();
     SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
     SMALL_RECT rect = { 0, 0, width - 1, height - 1 };
@@ -89,10 +90,8 @@ int main()
     _setmode(_fileno(stdin), _O_U8TEXT);
     //_setmode(_fileno(stdout), _O_U8TEXT);
     //sound.playBackground();
-    SetConsoleOutputCP(CP_UTF8);
     
     //-----------------------------------------------------------------
-    
 
     loadMics();
     loadMap();
@@ -153,7 +152,8 @@ int main()
                 accumulator1 -= timestep;
                 clear(screen1); // Xoa man hinh
                 draw(screen1, map[level], { 0, 0 }, 0, 1, 1);
-                drawPortal();
+                if (snake1.score == 5)
+                    drawPortal();
                 drawFood(food);
                 draw(snake1); // Vẽ rắn
                 drawSideBar();

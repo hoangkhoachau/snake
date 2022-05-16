@@ -1,9 +1,13 @@
 ﻿#pragma once
 #include "Header.h"
+
+//Toạ độ
 struct coordinate
 {
     int X, Y;
 };
+
+//Trạng thái rắn
 enum snakeState
 {
     outside,
@@ -11,6 +15,8 @@ enum snakeState
     inside,
     goingOut
 };
+
+//Rắn
 struct snake
 {
     int score;
@@ -21,7 +27,11 @@ struct snake
     snakeState state;
     std::list<coordinate> body;
 };
+
+//Trạng thái game
 enum gameState { inMenu, inGame, inLoad, inPaused ,gameOver};
+
+//thông tin ma trận màn hình
 struct screen {
     int width, height;
     wchar_t* characters; // Ma tran man hinh
@@ -36,7 +46,10 @@ struct screen {
         free(color);
     }
 };
+
 extern std::wifstream fin;
+
+//Định dạng lưu hình ảnh kí tự
 struct frame
 {
     int sizeX, sizeY;
@@ -62,6 +75,8 @@ struct frame
             fin >> color[i];
     }
 };
+
+//Nút
 struct button
 {
     int index;
@@ -69,34 +84,89 @@ struct button
     int sizeX, sizeY;
     LPCWSTR str;
 };
+
+//Đặt thông số mặc định cho rắn
 void init(snake& snake1);
+
+//Chuyển toạ độ 2 chiều sang 1 chiều
 int index(const int& x, const int& y, screen& s);
+
+//Vẽ menu load
 void drawLoadMenu();
+
+//vẽ thông tin game
 void drawInfo();
+
+// vẽ thanh điểm
 void drawScoreBar();
+
+//Vẽ nút
 void draw(button b, bool selected);
+
+//Vẽ thanh phải màn hình
 void drawSideBar();
+
+//Vẽ menu
 void drawMenu();
+
+//Vẽ màn hình đếm ngược
 void countDown();
+
+//Vẽ màn hình dead
 void showGameOver();
+
+//Vẽ rắn
 void draw(snake x);
+
+//Vẽ điểm
 void drawScore(snake a);
+
+//Vẽ hình theo định dạng frame
 void draw(screen& s, frame a, coordinate w, int orientation = 0, bool drawColor = true, bool drawSpace = false);
+
+//Vẽ cổng
 void drawPortal();
+
+//Xoá màn hình
 void clear(screen& s);
+
+//Vẽ thức ăn
 void drawFood(std::unordered_set<int> food);
 
+//Vẽ cài đặt
+void drawSettings();
+
+//Lưu game
 void saveGame();
+
+//Ghi file save
 void writeSaveFile();
+
 static const long width = 50, height = 30; // Chieu rong , chieu cao
-void countDown();
+
+//Tìm vị trí trống trên màn hình
 coordinate findSpace(int sizeX = 1, int sizeY = 1);
+
+//Kiểm tra vị trí có trống không
 bool valid(int x, int y, int sizeX, int sizeY);
-int index(const int& x, const int& y, screen& s);
+
+//Reset data rắn
 void resetData(snake& snake1);
+
+//reset game
 void resetGame();
+
+//Di chuyển rắn
 void move(char c, snake& snake1);
+
+//Xử lí input
 void input();
+
+//Tạo cổng
 void spawnPortal();
+
+//Qua màn
 void nextLevel();
+
+//Xử lí logic
 void update();

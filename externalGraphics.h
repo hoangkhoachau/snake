@@ -5,6 +5,7 @@
 #define InteractOrigin_y 0
 
 void gotoXY(int x, int y);
+void ShowConsoleCursor(bool showFlag);
 void FixConsoleColor(int k);
 void FixConsoleWindow();
 void DrawMessBoard(int x, int y, int h, int w);

@@ -1,12 +1,13 @@
 ﻿#include "Header.h"
 #include "game.h"
 #include "fileProcessing.h"
+
 using namespace std;
 
 extern snake snake1;
 extern bool paused,start;
 extern screen screen1,screen2;
-extern int level, levelScore,cursor2,cursor3, startLoadIndex, portalOrientation;
+extern int level, levelScore,cursor2,cursor3, startLoadIndex, portalOrientation,speedSetting;
 extern unsigned long long frameN, portalSpawnTime, countDownStartTime;
 extern list<button>::iterator cursor;
 extern list<button> buttons;
@@ -15,6 +16,7 @@ extern vector<Save> save;
 extern gameState state;
 extern wstring MSSV;
 extern coordinate portalPos;
+
 void drawInfo()
 {
     if (snake1.dead)
@@ -28,13 +30,37 @@ void drawInfo()
     drawScore(snake1);
 }
 
+void drawSetting() {
+    clear(screen2);
+    coordinate t = { 35, 26 };
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 12; j++)
+            if (i == 0 || j == 0 || i == 9 || j == 11)
+            {
+                screen1.characters[index(t.X + i, t.Y - j, screen1)] = L'B';
+                screen1.color[index(t.X + i, t.Y - j, screen1)] = 255;
+            }
+            else
+            {
+                if (j <= speedSetting)
+                {
+                    screen1.characters[index(t.X + i, t.Y - j, screen1)] = L'B';
+                    screen1.color[index(t.X + i, t.Y - j, screen1)] = 10 + 16 * 10;
+                }
+                else
+                    screen1.color[index(t.X + i, t.Y - j, screen1)] = 0;
+            }
+    }
+}
+
 void drawScoreBar()
 {
     coordinate t = { 35, 26 };
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 12; j++)
-            if (i == 0 || j == 0 || i == 5 || j == 11)
+            if (i == 0 || j == 0 || i == 9 || j == 11)
             {
                 screen1.characters[index(t.X + i, t.Y - j, screen1)] = L'B';
                 screen1.color[index(t.X + i, t.Y - j, screen1)] = 255;
@@ -119,6 +145,7 @@ void drawLoadMenu() {
         wsprintfW(&screen2.characters[index(57, 9 + i, screen2)], L"%d", save[startLoadIndex + i].snak.score);
         wsprintfW(&screen2.characters[index(65, 9 + i, screen2)], &wstr[0]);
     }
+    wsprintfW(&screen2.characters[index(40, 4, screen2)], L"PRESS ESC TO RETURN MENU");
 
 }
 
@@ -141,8 +168,10 @@ void countDown() {
         paused = false;
     }
 }
+
 // chưa fix.
 extern HANDLE buffer,old;
+
 void showGameOver()
 {
     if (state == gameOver) {
@@ -157,6 +186,7 @@ void showGameOver()
     }
     //wsprintfW(&screen1.characters[index(coordi.X + 3, coordi.Y + sizeY / 2, screen1)], L"Do you want to save current game?"); // fixed
 }
+
 void draw(snake x)
 {
     int j = x.body.size() - 1;
@@ -238,6 +268,7 @@ void clear(screen& s)
         s.color[i] = 14 * 16; // Mặc định chữ trắng, nền đen
     }
 }
+
 void drawFood(unordered_set<int> food)
 {
     for (int x : food)
