@@ -101,7 +101,6 @@ int main()
     srand(chrono::system_clock::now().time_since_epoch().count());
     clear(screen1);
     clear(screen2);
-    nextLevel();
 
     using clock = std::chrono::steady_clock;
     chrono::nanoseconds deltaTime(0ms), accumulator(0ms), accumulator1(0ms);

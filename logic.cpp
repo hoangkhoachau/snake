@@ -304,6 +304,7 @@ void input()
                 start = true;
                 level = 0;
                 resetData(snake1);
+                nextLevel();
                 sound.playReady();
                 //activeMenu = false;
                 break;
@@ -318,6 +319,7 @@ void input()
                 }
                 break;
             case 2:
+                if (cursor3 < 0) cursor3 = 0;
                 sort(save.begin(), save.end(), optionAscendingTime);
                 sound.playEnter();
                 state = inLoad;

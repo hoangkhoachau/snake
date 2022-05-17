@@ -23,9 +23,6 @@ void drawInfo()
     if (snake1.dead)
     {
         paused = true;
-        wsprintfW(&screen1.characters[index(35, 13, screen1)], L"Dead");
-        for (int i = 35; i < 35 + 4; i++)
-            screen1.color[index(i, 13, screen1)] = 4;
     }
     wsprintfW(&screen1.characters[index(35, 8, screen1)], L"LEVEL %d", level);
     drawScore(snake1);

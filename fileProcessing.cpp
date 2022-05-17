@@ -24,7 +24,7 @@ void writeSaveFile()
         fout << i.level << '\n';
         fout << chrono::system_clock::to_time_t(i.saveTime) << '\n';
         fout << i.snak.score << '\n';
-        fout << i.snak.totalScore;
+        fout << i.snak.totalScore << '\n';
         fout << i.snak.deadTime << '\n';
         fout << i.snak.levelFinished << '\n';
         fout << i.snak.state << '\n';
@@ -85,8 +85,7 @@ void loadSave(Save& save)
     snake1 = snake(save.snak);
     level = save.level;
     coordinate t = findSpace();
-    if (snake1.state==goingOut || snake1.state == inside)
-        food=index(t.X, t.Y, screen1);
+    food=index(t.X, t.Y, screen1);
 }
 
 extern HANDLE buffer, old;
