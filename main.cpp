@@ -55,9 +55,7 @@ int main()
 {
     sound.playBackground();
     SetConsoleOutputCP(CP_UTF8);
-    ShowConsoleCursor(false);
-    FixConsoleWindow();
-    //loading();
+    
 
     //-----------------------------------------------------------------
     // Thiet lap buffer
@@ -91,7 +89,7 @@ int main()
 
     _setmode(_fileno(stdin), _O_U8TEXT);
     //_setmode(_fileno(stdout), _O_U8TEXT);
-    
+    loading();
     
     //-----------------------------------------------------------------
 
