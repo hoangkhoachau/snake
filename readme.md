@@ -6,6 +6,9 @@ This repository contains a Snake game implemented in C++.
 
 This is a simple implementation of the classic Snake game using C++. The game logic and rendering are handled within the code, making it a straightforward example of game development in C++.
 
+## Demo
+[Youtube](https://www.youtube.com/watch?v=t4oEPeDN93s)
+
 ## Features
 
 - Using console buffer to render the screen one frame at a time.
@@ -24,9 +27,7 @@ To compile and run the Snake game, follow these steps:
 
 2. **Compile the game:**
 
-   ```sh
-   g++ -o snake main.cpp
-   ```
+   Compile using Visual Studio
 
 3. **Run the game:**
    ```sh
